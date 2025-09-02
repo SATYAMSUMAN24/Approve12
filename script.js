@@ -340,13 +340,6 @@ function validateBasicDetails() {
 function validateIndividualBasicDetails() {
     const fullName = document.getElementById('fullName').value.trim();
     const mobile = document.getElementById('mobile').value.trim();
-    const identityDocument = document.getElementById('identityDocument').value;
-    const idNumber = document.getElementById('idNumber').value.trim();
-    const panNumber = document.getElementById('panNumber').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const loanAmount = document.getElementById('loanAmount').value.trim();
-    const agreeTerms = document.getElementById('agreeTerms').checked;
-    const agreeConsent = document.getElementById('agreeConsent').checked;
 
     let isValid = true;
 
@@ -367,42 +360,68 @@ function validateIndividualBasicDetails() {
         isValid = false;
     }
 
-    if (!identityDocument) {
-        showFieldError('identityDocument', 'Please select an identity document');
-        isValid = false;
+    // Only validate visible fields
+    const identityDocGroup = document.getElementById('identityDocGroup');
+    if (identityDocGroup && identityDocGroup.style.display !== 'none') {
+        const identityDocument = document.getElementById('identityDocument').value;
+        if (!identityDocument) {
+            showFieldError('identityDocument', 'Please select an identity document');
+            isValid = false;
+        }
     }
 
-    if (!idNumber) {
-        showFieldError('idNumber', 'Please enter your identity document number');
-        isValid = false;
+    const idNumberGroup = document.getElementById('idNumberGroup');
+    if (idNumberGroup && idNumberGroup.style.display !== 'none') {
+        const idNumber = document.getElementById('idNumber').value.trim();
+        if (!idNumber) {
+            showFieldError('idNumber', 'Please enter your identity document number');
+            isValid = false;
+        }
     }
 
-
-    if (!panNumber || !validatePAN(panNumber)) {
-        showFieldError('panNumber', 'Please enter a valid PAN number (e.g., ABCDE1234F)');
-        isValid = false;
+    const panNumberGroup = document.getElementById('panNumberGroup');
+    if (panNumberGroup && panNumberGroup.style.display !== 'none') {
+        const panNumber = document.getElementById('panNumber').value.trim();
+        if (!panNumber || !validatePAN(panNumber)) {
+            showFieldError('panNumber', 'Please enter a valid PAN number (e.g., ABCDE1234F)');
+            isValid = false;
+        }
     }
 
-    if (!email || !validateEmail(email)) {
-        showFieldError('email', 'Please enter a valid email address');
-        isValid = false;
+    const emailGroup = document.getElementById('emailGroup');
+    if (emailGroup && emailGroup.style.display !== 'none') {
+        const email = document.getElementById('email').value.trim();
+        if (!email || !validateEmail(email)) {
+            showFieldError('email', 'Please enter a valid email address');
+            isValid = false;
+        }
     }
 
-    if (!loanAmount || parseFloat(loanAmount) <= 0) {
-        showFieldError('loanAmount', 'Please enter a valid loan amount');
-        isValid = false;
-    } else {
-        formData.loanAmount = parseFloat(loanAmount);
+    const loanAmountGroup = document.getElementById('loanAmountGroup');
+    if (loanAmountGroup && loanAmountGroup.style.display !== 'none') {
+        const loanAmount = document.getElementById('loanAmount').value.trim();
+        if (!loanAmount || parseFloat(loanAmount) <= 0) {
+            showFieldError('loanAmount', 'Please enter a valid loan amount');
+            isValid = false;
+        } else {
+            formData.loanAmount = parseFloat(loanAmount);
+        }
     }
 
-    if (!agreeTerms) {
-        showError('Please agree to the Terms & Conditions');
-        isValid = false;
-    }
+    const termsGroup = document.getElementById('termsConditionsGroup');
+    if (termsGroup && termsGroup.style.display !== 'none') {
+        const agreeTerms = document.getElementById('agreeTerms').checked;
+        const agreeConsent = document.getElementById('agreeConsent').checked;
 
-    if (!agreeConsent) {
-        showError('Please agree to the consent for information sharing');
-        isValid = false;
+        if (!agreeTerms) {
+            showError('Please agree to the Terms & Conditions');
+            isValid = false;
+        }
+
+        if (!agreeConsent) {
+            showError('Please agree to the consent for information sharing');
+            isValid = false;
+        }
     }
 
     return isValid;
@@ -2997,38 +3016,13 @@ function verifyOTP() {
 }
 
 function showNextFormElements() {
-    // Show identity document dropdown
+    // Show all form elements immediately after mobile verification
     document.getElementById('identityDocGroup').style.display = 'block';
-
-    // Show ID number field
-    setTimeout(() => {
-        document.getElementById('idNumberGroup').style.display = 'block';
-    }, 300);
-
-    // Show OVD agreement checkbox
-    setTimeout(() => {
-        document.getElementById('ovdAgreementGroup').style.display = 'block';
-    }, 600);
-
-    // Show PAN number field
-    setTimeout(() => {
-        document.getElementById('panNumberGroup').style.display = 'block';
-    }, 900);
-
-    // Show email field
-    setTimeout(() => {
-        document.getElementById('emailGroup').style.display = 'block';
-    }, 1200);
-
-    // Show loan amount field
-    setTimeout(() => {
-        document.getElementById('loanAmountGroup').style.display = 'block';
-    }, 1500);
-
-    // Show terms and conditions
-    setTimeout(() => {
-        document.getElementById('termsConditionsGroup').style.display = 'block';
-    }, 1800);
+    document.getElementById('idNumberGroup').style.display = 'block';
+    document.getElementById('panNumberGroup').style.display = 'block';
+    document.getElementById('emailGroup').style.display = 'block';
+    document.getElementById('loanAmountGroup').style.display = 'block';
+    document.getElementById('termsConditionsGroup').style.display = 'block';
 }
 
 function updateIdNumberLabel(documentType) {
