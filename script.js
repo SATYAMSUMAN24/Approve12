@@ -1067,25 +1067,84 @@ function showDocumentVerificationPopup(documentType, documentId) {
                     
                     <div class="basic-details-form" id="form-${documentId}" style="display: none;">
                         <h4>Fill Basic Details</h4>
-                        <div class="form-group">
-                            <label>Invoice Number *</label>
-                            <input type="text" id="invoiceNumber-${documentId}" required>
+                        
+                        <!-- Basic Invoice Information -->
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Invoice Number *</label>
+                                <input type="text" id="invoiceNumber-${documentId}" required>
+                            </div>
+                            <div class="form-group half">
+                                <label>Invoice Date *</label>
+                                <input type="date" id="invoiceDate-${documentId}" required>
+                            </div>
                         </div>
+                        
+                        <!-- Dealer Information -->
                         <div class="form-group">
                             <label>Dealer Name *</label>
                             <input type="text" id="dealerName-${documentId}" required>
                         </div>
                         <div class="form-group">
+                            <label>Dealer Address *</label>
+                            <textarea id="dealerAddress-${documentId}" required placeholder="Enter complete dealer address" rows="3"></textarea>
+                        </div>
+                        
+                        <!-- Vehicle Information -->
+                        <div class="form-group">
                             <label>Vehicle Model *</label>
                             <input type="text" id="vehicleModel-${documentId}" required>
                         </div>
-                        <div class="form-group">
-                            <label>Invoice Amount *</label>
-                            <input type="number" id="invoiceAmount-${documentId}" required>
+                        
+                        <!-- Cost Breakdown -->
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Ex-showroom Cost *</label>
+                                <input type="number" id="exShowroomCost-${documentId}" step="0.01" required>
+                            </div>
+                            <div class="form-group half">
+                                <label>Registration</label>
+                                <input type="number" id="registration-${documentId}" step="0.01" value="0">
+                            </div>
                         </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Insurance</label>
+                                <input type="number" id="insurance-${documentId}" step="0.01" value="0">
+                            </div>
+                            <div class="form-group half">
+                                <label>Discount</label>
+                                <input type="number" id="discount-${documentId}" step="0.01" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Exchange Amount</label>
+                                <input type="number" id="exchangeAmount-${documentId}" step="0.01" value="0">
+                            </div>
+                            <div class="form-group half">
+                                <label>Accessories & Others</label>
+                                <input type="number" id="accessories-${documentId}" step="0.01" value="0">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Other Taxes/GST & Others</label>
+                                <input type="number" id="otherTaxes-${documentId}" step="0.01" value="0">
+                            </div>
+                            <div class="form-group half">
+                                <label>Installation Fee</label>
+                                <input type="number" id="installationFee-${documentId}" step="0.01" value="0">
+                            </div>
+                        </div>
+                        
+                        <!-- Total Invoice Value -->
                         <div class="form-group">
-                            <label>Invoice Date *</label>
-                            <input type="date" id="invoiceDate-${documentId}" required>
+                            <label>Total Invoice Value *</label>
+                            <input type="number" id="totalInvoiceValue-${documentId}" step="0.01" required readonly>
                         </div>
                     </div>
                 </div>
@@ -1243,6 +1302,11 @@ function showBasicDetailsForm(documentId) {
         if (form) {
             form.style.display = 'none';
         }
+        
+        // Setup auto-calculation for dealer invoice when form is shown later
+        setTimeout(() => {
+            setupDealerInvoiceCalculation(documentId);
+        }, 100);
     }
     
     // Show verify button
@@ -1250,6 +1314,49 @@ function showBasicDetailsForm(documentId) {
     if (verifyBtn && documentId !== 'dealerInvoice') {
         verifyBtn.style.display = 'inline-block';
     }
+}
+
+// Setup auto-calculation for dealer invoice total
+function setupDealerInvoiceCalculation(documentId) {
+    const costFields = [
+        `exShowroomCost-${documentId}`,
+        `registration-${documentId}`,
+        `insurance-${documentId}`,
+        `discount-${documentId}`,
+        `exchangeAmount-${documentId}`,
+        `accessories-${documentId}`,
+        `otherTaxes-${documentId}`,
+        `installationFee-${documentId}`
+    ];
+    
+    const totalField = document.getElementById(`totalInvoiceValue-${documentId}`);
+    
+    function calculateTotal() {
+        const exShowroom = parseFloat(document.getElementById(`exShowroomCost-${documentId}`)?.value || 0);
+        const registration = parseFloat(document.getElementById(`registration-${documentId}`)?.value || 0);
+        const insurance = parseFloat(document.getElementById(`insurance-${documentId}`)?.value || 0);
+        const discount = parseFloat(document.getElementById(`discount-${documentId}`)?.value || 0);
+        const exchange = parseFloat(document.getElementById(`exchangeAmount-${documentId}`)?.value || 0);
+        const accessories = parseFloat(document.getElementById(`accessories-${documentId}`)?.value || 0);
+        const otherTaxes = parseFloat(document.getElementById(`otherTaxes-${documentId}`)?.value || 0);
+        const installationFee = parseFloat(document.getElementById(`installationFee-${documentId}`)?.value || 0);
+        
+        // Calculate total: ex-showroom + registration + insurance + accessories + taxes + installation - discount - exchange
+        const total = exShowroom + registration + insurance + accessories + otherTaxes + installationFee - discount - exchange;
+        
+        if (totalField) {
+            totalField.value = total.toFixed(2);
+        }
+    }
+    
+    // Add event listeners to all cost fields
+    costFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.addEventListener('input', calculateTotal);
+            field.addEventListener('change', calculateTotal);
+        }
+    });
 }
 
 // ITR method selection
@@ -1292,6 +1399,11 @@ function handleFuelTypeSelection(documentId, fuelType) {
     const form = document.getElementById(`form-${documentId}`);
     if (form) {
         form.style.display = 'block';
+        
+        // Setup auto-calculation for dealer invoice
+        if (documentId === 'dealerInvoice') {
+            setupDealerInvoiceCalculation(documentId);
+        }
     }
     
     // Show verify button
