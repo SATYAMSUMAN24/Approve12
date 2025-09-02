@@ -342,7 +342,6 @@ function validateIndividualBasicDetails() {
     const mobile = document.getElementById('mobile').value.trim();
     const identityDocument = document.getElementById('identityDocument').value;
     const idNumber = document.getElementById('idNumber').value.trim();
-    const agreeOVD = document.getElementById('agreeOVD').checked;
     const panNumber = document.getElementById('panNumber').value.trim();
     const email = document.getElementById('email').value.trim();
     const loanAmount = document.getElementById('loanAmount').value.trim();
@@ -378,10 +377,6 @@ function validateIndividualBasicDetails() {
         isValid = false;
     }
 
-    if (!agreeOVD) {
-        showError('Please agree to validate OVD details');
-        isValid = false;
-    }
 
     if (!panNumber || !validatePAN(panNumber)) {
         showFieldError('panNumber', 'Please enter a valid PAN number (e.g., ABCDE1234F)');
@@ -418,7 +413,6 @@ function validateNonIndividualBasicDetails() {
     const mobile = document.getElementById('businessMobile').value.trim();
     const loanAmount = document.getElementById('businessLoanAmount').value.trim();
     const panNumber = document.getElementById('businessPanNumber').value.trim();
-    const agreeOVD = document.getElementById('businessAgreeOVD').checked;
     const agreeTerms = document.getElementById('businessAgreeTerms').checked;
     const agreeConsent = document.getElementById('businessAgreeConsent').checked;
 
@@ -446,10 +440,6 @@ function validateNonIndividualBasicDetails() {
         isValid = false;
     }
 
-    if (!agreeOVD) {
-        showError('Please agree to validate OVD details');
-        isValid = false;
-    }
 
     if (!agreeTerms) {
         showError('Please agree to the Terms & Conditions');
@@ -978,7 +968,7 @@ function showDocumentVerificationPopup(documentType, documentId) {
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="fetch-section" id="fetch-section-${documentId}" style="display: none;">
                         <h4>Fetch ITR Details</h4>
                         <div class="form-row">
@@ -992,7 +982,7 @@ function showDocumentVerificationPopup(documentType, documentId) {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="upload-section" id="upload-section-${documentId}" style="display: none;">
                         <div class="upload-area" id="upload-area-${documentId}">
                             <div class="upload-icon">📄</div>
@@ -1032,7 +1022,7 @@ function showDocumentVerificationPopup(documentType, documentId) {
                         </div>
                         <div class="upload-status" id="upload-status-${documentId}"></div>
                     </div>
-                    
+
                     <div class="car-type-selection" id="car-type-${documentId}" style="display: none;">
                         <h4>Select Car Type</h4>
                         <div class="car-type-checkboxes">
@@ -1048,7 +1038,7 @@ function showDocumentVerificationPopup(documentType, documentId) {
                             </label>
                         </div>
                     </div>
-                    
+
                     <div class="fuel-type-selection" id="fuel-type-${documentId}" style="display: none;">
                         <h4>Select Fuel Type</h4>
                         <div class="fuel-type-checkboxes">
@@ -1064,10 +1054,10 @@ function showDocumentVerificationPopup(documentType, documentId) {
                             </label>
                         </div>
                     </div>
-                    
+
                     <div class="basic-details-form" id="form-${documentId}" style="display: none;">
                         <h4>Fill Basic Details</h4>
-                        
+
                         <!-- Basic Invoice Information -->
                         <div class="form-row">
                             <div class="form-group half">
@@ -1079,7 +1069,7 @@ function showDocumentVerificationPopup(documentType, documentId) {
                                 <input type="date" id="invoiceDate-${documentId}" required>
                             </div>
                         </div>
-                        
+
                         <!-- Dealer Information -->
                         <div class="form-group">
                             <label>Dealer Name *</label>
@@ -1089,13 +1079,13 @@ function showDocumentVerificationPopup(documentType, documentId) {
                             <label>Dealer Address *</label>
                             <textarea id="dealerAddress-${documentId}" required placeholder="Enter complete dealer address" rows="3"></textarea>
                         </div>
-                        
+
                         <!-- Vehicle Information -->
                         <div class="form-group">
                             <label>Vehicle Model *</label>
                             <input type="text" id="vehicleModel-${documentId}" required>
                         </div>
-                        
+
                         <!-- Cost Breakdown -->
                         <div class="form-row">
                             <div class="form-group half">
@@ -1107,7 +1097,7 @@ function showDocumentVerificationPopup(documentType, documentId) {
                                 <input type="number" id="registration-${documentId}" step="0.01" value="0">
                             </div>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group half">
                                 <label>Insurance</label>
@@ -1118,7 +1108,7 @@ function showDocumentVerificationPopup(documentType, documentId) {
                                 <input type="number" id="discount-${documentId}" step="0.01" value="0">
                             </div>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group half">
                                 <label>Exchange Amount</label>
@@ -1129,7 +1119,7 @@ function showDocumentVerificationPopup(documentType, documentId) {
                                 <input type="number" id="accessories-${documentId}" step="0.01" value="0">
                             </div>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group half">
                                 <label>Other Taxes/GST & Others</label>
@@ -1140,7 +1130,7 @@ function showDocumentVerificationPopup(documentType, documentId) {
                                 <input type="number" id="installationFee-${documentId}" step="0.01" value="0">
                             </div>
                         </div>
-                        
+
                         <!-- Total Invoice Value -->
                         <div class="form-group">
                             <label>Total Invoice Value *</label>
@@ -1249,13 +1239,13 @@ function handlePDFFileSelection(file, documentId) {
     showLoading();
     setTimeout(() => {
         hideLoading();
-        
+
         // Show OCR extracted information (simulated)
         showOCRExtractedInfo(documentId);
-        
+
         // Show basic details form based on document type
         showBasicDetailsForm(documentId);
-        
+
         showSuccess('PDF uploaded and verified successfully!');
     }, 2000);
 }
@@ -1282,7 +1272,7 @@ function showOCRExtractedInfo(documentId) {
             </div>
         </div>
     `;
-    
+
     uploadStatus.innerHTML += ocrInfo;
 }
 
@@ -1292,7 +1282,7 @@ function showBasicDetailsForm(documentId) {
     if (form) {
         form.style.display = 'block';
     }
-    
+
     // For dealer invoice, show car type selection instead of basic form initially
     if (documentId === 'dealerInvoice') {
         const carTypeSection = document.getElementById(`car-type-${documentId}`);
@@ -1302,13 +1292,13 @@ function showBasicDetailsForm(documentId) {
         if (form) {
             form.style.display = 'none';
         }
-        
+
         // Setup auto-calculation for dealer invoice when form is shown later
         setTimeout(() => {
             setupDealerInvoiceCalculation(documentId);
         }, 100);
     }
-    
+
     // Show verify button
     const verifyBtn = document.getElementById(`verify-btn-${documentId}`);
     if (verifyBtn && documentId !== 'dealerInvoice') {
@@ -1328,9 +1318,9 @@ function setupDealerInvoiceCalculation(documentId) {
         `otherTaxes-${documentId}`,
         `installationFee-${documentId}`
     ];
-    
+
     const totalField = document.getElementById(`totalInvoiceValue-${documentId}`);
-    
+
     function calculateTotal() {
         const exShowroom = parseFloat(document.getElementById(`exShowroomCost-${documentId}`)?.value || 0);
         const registration = parseFloat(document.getElementById(`registration-${documentId}`)?.value || 0);
@@ -1340,15 +1330,15 @@ function setupDealerInvoiceCalculation(documentId) {
         const accessories = parseFloat(document.getElementById(`accessories-${documentId}`)?.value || 0);
         const otherTaxes = parseFloat(document.getElementById(`otherTaxes-${documentId}`)?.value || 0);
         const installationFee = parseFloat(document.getElementById(`installationFee-${documentId}`)?.value || 0);
-        
+
         // Calculate total: ex-showroom + registration + insurance + accessories + taxes + installation - discount - exchange
         const total = exShowroom + registration + insurance + accessories + otherTaxes + installationFee - discount - exchange;
-        
+
         if (totalField) {
             totalField.value = total.toFixed(2);
         }
     }
-    
+
     // Add event listeners to all cost fields
     costFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
@@ -1364,7 +1354,7 @@ function selectITRMethod(method, documentId) {
     const fetchSection = document.getElementById(`fetch-section-${documentId}`);
     const uploadSection = document.getElementById(`upload-section-${documentId}`);
     const verifyBtn = document.getElementById(`verify-btn-${documentId}`);
-    
+
     if (method === 'fetch') {
         fetchSection.style.display = 'block';
         uploadSection.style.display = 'none';
@@ -1399,13 +1389,13 @@ function handleFuelTypeSelection(documentId, fuelType) {
     const form = document.getElementById(`form-${documentId}`);
     if (form) {
         form.style.display = 'block';
-        
+
         // Setup auto-calculation for dealer invoice
         if (documentId === 'dealerInvoice') {
             setupDealerInvoiceCalculation(documentId);
         }
     }
-    
+
     // Show verify button
     const verifyBtn = document.getElementById(`verify-btn-${documentId}`);
     if (verifyBtn) {
@@ -1439,7 +1429,7 @@ function showContactBranchNotification() {
             </div>
         </div>
     `;
-    
+
     document.body.appendChild(modal);
     modal.style.display = 'block';
 }
@@ -1474,17 +1464,17 @@ function verifyDocument(documentId, documentType) {
     if (documentType === 'itrDoc') {
         const verifyBtn = document.getElementById(`verify-btn-${documentId}`);
         const method = verifyBtn.getAttribute('data-method');
-        
+
         if (method === 'fetch') {
             // Validate fetch fields
             const userId = document.getElementById(`userId-${documentId}`);
             const password = document.getElementById(`password-${documentId}`);
-            
+
             if (!userId.value.trim() || !password.value.trim()) {
                 showError('Please fill User ID and Password');
                 return;
             }
-            
+
             formData = {
                 userId: userId.value,
                 password: password.value,
@@ -1497,10 +1487,10 @@ function verifyDocument(documentId, documentType) {
                 showError('Please upload a PDF file first');
                 return;
             }
-            
+
             const form = document.getElementById(`form-${documentId}`);
             const requiredFields = form.querySelectorAll('[required]');
-            
+
             requiredFields.forEach(field => {
                 if (!field.value.trim()) {
                     field.style.borderColor = '#dc3545';
@@ -1510,12 +1500,12 @@ function verifyDocument(documentId, documentType) {
                     formData[field.id.replace(`-${documentId}`, '')] = field.value;
                 }
             });
-            
+
             if (!isValid) {
                 showError('Please fill all required fields');
                 return;
             }
-            
+
             formData.method = 'upload';
         }
     } else {
@@ -1525,7 +1515,7 @@ function verifyDocument(documentId, documentType) {
             showError('Please upload a PDF file first');
             return;
         }
-        
+
         // For dealer invoice, check if car type selection is made
         if (documentType === 'dealerInvoice') {
             const carTypeSelected = document.querySelector(`input[name="carType-${documentId}"]:checked`);
@@ -1533,7 +1523,7 @@ function verifyDocument(documentId, documentType) {
                 showError('Please select car type');
                 return;
             }
-            
+
             if (carTypeSelected.value === 'new') {
                 const fuelTypeSelected = document.querySelector(`input[name="fuelType-${documentId}"]:checked`);
                 if (!fuelTypeSelected) {
@@ -1546,12 +1536,12 @@ function verifyDocument(documentId, documentType) {
                 formData.carType = carTypeSelected.value;
             }
         }
-        
+
         // Validate form fields
         const form = document.getElementById(`form-${documentId}`);
         if (form.style.display !== 'none') {
             const requiredFields = form.querySelectorAll('[required]');
-            
+
             requiredFields.forEach(field => {
                 if (!field.value.trim()) {
                     field.style.borderColor = '#dc3545';
@@ -1561,7 +1551,7 @@ function verifyDocument(documentId, documentType) {
                     formData[field.id.replace(`-${documentId}`, '')] = field.value;
                 }
             });
-            
+
             if (!isValid) {
                 showError('Please fill all required fields');
                 return;
@@ -2878,7 +2868,7 @@ function handleDocumentUpload(documentId) {
         'gstDoc': 'gstDoc',
         'itrDoc': 'itrDoc'
     };
-    
+
     const documentType = documentTypeMap[documentId] || documentId;
     showDocumentVerificationPopup(documentType, documentId);
 }
