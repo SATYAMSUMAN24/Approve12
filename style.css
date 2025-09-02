@@ -2234,13 +2234,15 @@ html, body {
     gap: 15px;
   }
   
-  .form-row {
+  .form-row,
+  .basic-details-form .form-row {
     flex-direction: column;
     gap: 0;
   }
   
-  .form-group.half {
-    margin-bottom: 20px;
+  .form-group.half,
+  .basic-details-form .form-group.half {
+    margin-bottom: 15px;
   }
   
   .notification-modal-content {
@@ -2256,6 +2258,15 @@ html, body {
   .contact-branch-btn,
   .close-notification-btn {
     width: 100%;
+  }
+  
+  .verification-modal-content {
+    width: 95%;
+    margin: 2% auto;
+  }
+  
+  .basic-details-form .form-group textarea {
+    min-height: 60px;
   }
 }
 
@@ -2451,7 +2462,8 @@ html, body {
 }
 
 .verification-form .form-group input,
-.verification-form .form-group select {
+.verification-form .form-group select,
+.verification-form .form-group textarea {
   width: 100%;
   padding: 10px 12px;
   border: 2px solid #ddd;
@@ -2462,7 +2474,8 @@ html, body {
 }
 
 .verification-form .form-group input:focus,
-.verification-form .form-group select:focus {
+.verification-form .form-group select:focus,
+.verification-form .form-group textarea:focus {
   outline: none;
   border-color: #E85A2A;
   box-shadow: 0 0 0 3px rgba(232, 90, 42, 0.1);
@@ -2470,6 +2483,72 @@ html, body {
 
 .verification-form .form-group input[type="password"] {
   font-family: inherit;
+}
+
+.verification-form .form-group textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
+.verification-form .form-group input[readonly] {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+}
+
+/* Basic Details Form within Verification Popup */
+.basic-details-form .form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.basic-details-form .form-group {
+  margin-bottom: 15px;
+}
+
+.basic-details-form .form-group.half {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.basic-details-form .form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.basic-details-form .form-group input,
+.basic-details-form .form-group select,
+.basic-details-form .form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+  font-family: inherit;
+}
+
+.basic-details-form .form-group input:focus,
+.basic-details-form .form-group select:focus,
+.basic-details-form .form-group textarea:focus {
+  outline: none;
+  border-color: #E85A2A;
+  box-shadow: 0 0 0 3px rgba(232, 90, 42, 0.1);
+}
+
+.basic-details-form .form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.basic-details-form .form-group input[readonly] {
+  background-color: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
 }
 
 /* Verification Actions */
